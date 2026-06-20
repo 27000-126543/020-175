@@ -51,29 +51,6 @@ const RecheckPage: React.FC = () => {
     setSelectedDate('');
   };
 
-  const handleChoiceSelect = (choice: RecheckChoice) => {
-    setSelectedChoice(choice);
-    if (choice === 'appointment') {
-      const today = new Date();
-      const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-      const nextWeekStr = nextWeek.toISOString().split('T')[0];
-      const mondayOffset = today.getDay() === 0 ? 1 : 8 - today.getDay();
-      const nextMonday = addDays(mondayOffset > 7 ? 8 : mondayOffset);
-      Taro.showActionSheet({
-        itemList: [
-          `明天 (${addDays(1)})`,
-          `后天 (${addDays(2)})`,
-          `本周六 (${getSaturday()})`,
-          `下周一 (${nextMonday})`,
-          `下周六 (${getNextSaturday()})`
-        ]
-      }).then((res) => {
-        const dates = [addDays(1), addDays(2), getSaturday(), nextMonday, getNextSaturday()];
-        setSelectedDate(dates[res.tapIndex]);
-      }).catch(() => {});
-    }
-  };
-
   const addDays = (days: number) => {
     const d = new Date();
     d.setDate(d.getDate() + days);
@@ -93,11 +70,70 @@ const RecheckPage: React.FC = () => {
     return d.toISOString().split('T')[0];
   };
 
+  const getNextMonday = () => {
+    const d = new Date();
+    const day = d.getDay();
+    let diff = day === 0 ? 1 : 8 - day;
+    if (diff > 7) diff = 8;
+    d.setDate(d.getDate() + diff);
+    return d.toISOString().split('T')[0];
+  };
+
+  const handlePickDate = () => {
+    const d1 = addDays(1);
+    const d2 = addDays(2);
+    const dSat = getSaturday();
+    const dMon = getNextMonday();
+    const dNextSat = getNextSaturday();
+
+    Taro.showActionSheet({
+      itemList: [
+        `明天 (${d1})`,
+        `后天 (${d2})`,
+        `本周六 (${dSat})`,
+        `下周一 (${dMon})`,
+        `下周六 (${dNextSat})`
+      ]
+    }).then((res) => {
+      const dates = [d1, d2, dSat, dMon, dNextSat];
+      const chosen = dates[res.tapIndex];
+      setSelectedDate(chosen);
+      console.log('[Recheck] 已选预约日期:', chosen);
+    }).catch(() => {});
+  };
+
+  const handleChangeChoice = (choice: RecheckChoice) => {
+    setSelectedChoice(choice);
+    if (choice !== 'appointment') {
+      setSelectedDate('');
+    } else if (!selectedDate) {
+      Taro.showToast({
+        title: '请选择预约日期',
+        icon: 'none',
+        duration: 1500
+      });
+    }
+  };
+
   const handleConfirmChoice = async () => {
     if (!selectedChoice || !currentReminder) return;
+
+    if (selectedChoice === 'appointment' && !selectedDate) {
+      Taro.showToast({
+        title: '请先选择预约日期',
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      handleRecheckChoice(currentReminder.id, selectedChoice, selectedChoice === 'appointment' ? selectedDate : undefined);
+      handleRecheckChoice(
+        currentReminder.id,
+        selectedChoice,
+        selectedChoice === 'appointment' ? selectedDate : undefined
+      );
 
       const choiceConfig = choiceOptions.find((c) => c.key === selectedChoice);
 
@@ -113,16 +149,20 @@ const RecheckPage: React.FC = () => {
           }
         });
       } else {
+        const tipMsg = selectedChoice === 'appointment'
+          ? `已预约 ${selectedDate}，已通知诊所`
+          : `${choiceConfig?.name}，已通知诊所`;
         Taro.showToast({
-          title: `${choiceConfig?.name}已通知诊所`,
-          icon: 'success'
+          title: tipMsg,
+          icon: 'success',
+          duration: 2000
         });
       }
 
       closeModal();
     } catch (e) {
       console.error('[Recheck] 提交失败', e);
-      Taro.showToast({ title: '提交失败', icon: 'error' });
+      Taro.showToast({ title: '提交失败，请重试', icon: 'error' });
     } finally {
       setIsSubmitting(false);
     }
@@ -150,6 +190,8 @@ const RecheckPage: React.FC = () => {
       </View>
     );
   }
+
+  const isConfirmDisabled = !selectedChoice || (selectedChoice === 'appointment' && !selectedDate);
 
   return (
     <ScrollView className={styles.page}>
@@ -289,7 +331,8 @@ const RecheckPage: React.FC = () => {
                   </Text>
                   <Text className={styles.handledText}>
                     {reminder.choice ? choiceTextMap[reminder.choice] : '已处理'}
-                    {reminder.appointmentDate && ` · 预约${reminder.appointmentDate}`}
+                    {reminder.appointmentDate && ` · 预约 ${reminder.appointmentDate}`}
+                    {reminder.handleDate && ` · ${reminder.handleDate}处理`}
                   </Text>
                 </View>
               </View>
@@ -337,52 +380,67 @@ const RecheckPage: React.FC = () => {
             </Text>
 
             {selectedChoice === 'appointment' && (
-              <View className={styles.datePickerRow}>
+              <View className={styles.datePickerRow} onClick={handlePickDate}>
                 <Text className={styles.dateLabel}>预约日期</Text>
-                <Text className={styles.dateValue}>
-                  {selectedDate || '请选择日期'}
+                <Text className={classnames(styles.dateValue, !selectedDate && styles.datePlaceholder)}>
+                  {selectedDate || '👆 请点击选择日期'}
                 </Text>
                 <Text className={styles.arrowIcon}>›</Text>
               </View>
             )}
 
             <View className={styles.choiceList}>
-              {choiceOptions.map((option) => (
-                <View
-                  key={option.key}
-                  className={styles.choiceItem}
-                  onClick={() => handleChoiceSelect(option.key)}
-                >
+              {choiceOptions.map((option) => {
+                const isActive = selectedChoice === option.key;
+                return (
                   <View
-                    className={styles.choiceIcon}
-                    style={{ backgroundColor: `${option.color}15` }}
+                    key={option.key}
+                    className={classnames(styles.choiceItem, isActive && styles.choiceItemActive)}
+                    style={isActive ? { borderColor: option.color, backgroundColor: `${option.color}08` } : undefined}
+                    onClick={() => handleChangeChoice(option.key)}
                   >
-                    <Text>{option.icon}</Text>
-                  </View>
-                  <View className={styles.choiceText}>
-                    <Text className={styles.choiceName} style={{ color: option.color }}>
-                      {option.name}
+                    <View
+                      className={styles.choiceIcon}
+                      style={{ backgroundColor: `${option.color}15` }}
+                    >
+                      <Text>{option.icon}</Text>
+                    </View>
+                    <View className={styles.choiceText}>
+                      <Text className={styles.choiceName} style={{ color: option.color }}>
+                        {option.name}
+                      </Text>
+                      <Text className={styles.choiceDesc}>{option.desc}</Text>
+                      {option.key === 'appointment' && selectedChoice === 'appointment' && selectedDate && (
+                        <Text className={styles.choiceExtra}>已选日期：{selectedDate}，点击可修改</Text>
+                      )}
+                    </View>
+                    <Text className={styles.arrowIcon} style={{ color: isActive ? option.color : undefined }}>
+                      {isActive ? '✓' : '›'}
                     </Text>
-                    <Text className={styles.choiceDesc}>{option.desc}</Text>
                   </View>
-                  <Text className={styles.arrowIcon}>
-                    {selectedChoice === option.key ? '✓' : '›'}
-                  </Text>
-                </View>
-              ))}
+                );
+              })}
             </View>
+
+            {selectedChoice === 'appointment' && !selectedDate && (
+              <View className={styles.warningHint}>
+                <Text>⚠️ 请先选择预约日期，确认后诊所将收到预约请求</Text>
+              </View>
+            )}
 
             <View className={styles.modalActions}>
               <Button className={styles.cancelBtn} onClick={closeModal}>
                 取消
               </Button>
               <Button
-                className={styles.confirmBtn}
+                className={classnames(styles.confirmBtn, isConfirmDisabled && styles.confirmBtnDisabled)}
                 loading={isSubmitting}
-                disabled={!selectedChoice || (selectedChoice === 'appointment' && !selectedDate)}
+                disabled={isConfirmDisabled || isSubmitting}
                 onClick={handleConfirmChoice}
               >
-                确认
+                {isConfirmDisabled
+                  ? (selectedChoice === 'appointment' ? '请先选日期' : '请选择方式')
+                  : '确认提交'}
               </Button>
             </View>
           </View>

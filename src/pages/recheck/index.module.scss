@@ -64,9 +64,7 @@
   z-index: 1;
 }
 
-.urgentCardBg {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95));
-}
+
 
 .statNum {
   font-size: 44rpx;
@@ -553,7 +551,42 @@
   color: $color-primary-dark;
 }
 
+.datePlaceholder {
+  color: $color-text-tertiary;
+  font-weight: $font-weight-normal;
+}
+
 .arrowIcon {
   color: $color-text-tertiary;
   font-size: 32rpx;
+}
+
+.choiceItemActive {
+  border-width: 3rpx;
+}
+
+.choiceExtra {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+  margin-top: 6rpx;
+  display: block;
+}
+
+.warningHint {
+  padding: $spacing-sm $spacing-md;
+  background-color: #FFF7ED;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-lg;
+
+  Text {
+    font-size: $font-size-xs;
+    color: #9A3412;
+    line-height: 1.5;
+  }
+}
+
+.confirmBtnDisabled {
+  background: $color-text-disabled;
+  box-shadow: none;
 }
