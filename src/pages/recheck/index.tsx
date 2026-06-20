@@ -461,6 +461,14 @@ const RecheckPage: React.FC = () => {
                           </Text>
                         </View>
                       )}
+                      {record.nextFollowUpDate && record.processStatus !== 'completed' && (
+                        <View className={styles.detailRow}>
+                          <Text className={styles.detailRowLabel}>下次跟进</Text>
+                          <Text className={styles.detailRowValue}>
+                            ⏰ {record.nextFollowUpDate}
+                          </Text>
+                        </View>
+                      )}
                     </View>
                   </View>
                 )}

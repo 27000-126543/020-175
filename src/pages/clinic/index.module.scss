@@ -167,7 +167,7 @@
 
 .statsRow {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(120rpx, 1fr));
   gap: $spacing-sm;
   margin-bottom: $spacing-lg;
 }
@@ -192,11 +192,24 @@
 .blueNum { color: #3B82F6; }
 .greenNum { color: #10B981; }
 .grayNum { color: #6B7280; }
+.purpleNum { color: #8B5CF6; }
+.redNum { color: #EF4444; }
 
 .statLabel {
   font-size: 20rpx;
   color: $color-text-tertiary;
   display: block;
+}
+
+.followUpCard {
+  background: linear-gradient(135deg, #FEF2F2 0%, #FECACA 100%);
+  border: 2rpx solid #FCA5A5;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
 }
 
 .searchRow {
@@ -652,4 +665,137 @@
 .confirmBtnDisabled {
   background: $color-text-disabled;
   box-shadow: none;
+}
+
+.groupSection {
+  margin-bottom: $spacing-xl;
+}
+
+.groupHeader {
+  margin-bottom: $spacing-md;
+  padding-bottom: $spacing-sm;
+  border-bottom: 2rpx dashed $color-divider;
+}
+
+.groupTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: #1E3A8A;
+}
+
+.followUpDueCard {
+  border: 3rpx solid #FCA5A5;
+  background: linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 100%);
+  box-shadow: 0 0 0 4rpx rgba(252, 165, 165, 0.2);
+}
+
+.followUpRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  background-color: #FFFBEB;
+  border-radius: $radius-md;
+  margin-top: $spacing-sm;
+  border-left: 4rpx solid #F59E0B;
+}
+
+.followUpRowDue {
+  background-color: #FEF2F2;
+  border-left-color: #EF4444;
+}
+
+.followUpIcon {
+  font-size: 28rpx;
+}
+
+.followUpLabel {
+  flex: 1;
+  font-size: $font-size-xs;
+  color: #92400E;
+  font-weight: $font-weight-medium;
+}
+
+.followUpRowDue .followUpLabel {
+  color: #991B1B;
+}
+
+.followUpBadge {
+  background-color: #EF4444;
+  color: white;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-round;
+  margin-left: $spacing-sm;
+}
+
+.modalCardLarge {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.detailTeethSection {
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  background-color: #ECFDF5;
+  border-radius: $radius-md;
+  border: 1rpx solid #A7F3D0;
+}
+
+.detailTeethRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+  margin-top: $spacing-sm;
+}
+
+.detailToothTag {
+  padding: 8rpx 16rpx;
+  background-color: $color-bg-card;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  color: #065F46;
+  border: 1rpx solid #A7F3D0;
+  font-weight: $font-weight-medium;
+}
+
+.datePickerRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background-color: $color-bg-hover;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-lg;
+  border: 1rpx solid $color-border;
+  transition: all $transition-base;
+
+  &:active {
+    background-color: #E5E7EB;
+  }
+}
+
+.dateLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  flex-shrink: 0;
+}
+
+.dateValue {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+  min-width: 0;
+}
+
+.datePlaceholder {
+  color: $color-text-tertiary;
+  font-weight: $font-weight-normal;
+}
+
+.arrowIcon {
+  font-size: 36rpx;
+  color: $color-text-tertiary;
+  line-height: 1;
 }

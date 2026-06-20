@@ -34,8 +34,8 @@ interface AppState extends PersistState {
   saveFeedbackPhoto: (tempFilePath: string, toothId: string) => Promise<string>;
   updateTeethFeedback: (toothId: string, feedback: ParentFeedback, oldPhotoUrl?: string) => void;
   handleRecheckChoice: (reminderId: string, choice: RecheckChoice, appointmentDate?: string) => void;
-  processClinicRecord: (recordId: string, processStatus: ProcessStatus, remark?: string, operator?: string) => void;
-  getClinicRecordsByFilter: (filter: { status?: ProcessStatus | 'all'; choice?: RecheckChoice | 'all'; keyword?: string }) => ClinicRecheckRecord[];
+  processClinicRecord: (recordId: string, processStatus: ProcessStatus, remark?: string, operator?: string, nextFollowUpDate?: string) => void;
+  getClinicRecordsByFilter: (filter: { status?: ProcessStatus | 'all' | 'handled'; choice?: RecheckChoice | 'all'; keyword?: string }) => ClinicRecheckRecord[];
   getRecordByReminderId: (reminderId: string) => ClinicRecheckRecord | undefined;
 }
 
@@ -258,15 +258,23 @@ export const useAppStore = create<AppState>((set, get) => ({
     });
   },
 
-  processClinicRecord: (recordId: string, processStatus: ProcessStatus, remark?: string, operator: string = '前台') => {
+  processClinicRecord: (recordId: string, processStatus: ProcessStatus, remark?: string, operator: string = '前台', nextFollowUpDate?: string) => {
     set((state) => {
       const record = state.clinicRecords.find((r) => r.id === recordId);
       if (!record) return state;
 
+      const updates: Partial<ClinicRecheckRecord> = {
+        processStatus,
+        processRemark: remark,
+        processTime: nowISO(),
+        processOperator: operator
+      };
+      if (nextFollowUpDate !== undefined) {
+        updates.nextFollowUpDate = nextFollowUpDate;
+      }
+
       const newClinicRecords = state.clinicRecords.map((r) =>
-        r.id === recordId
-          ? { ...r, processStatus, processRemark: remark, processTime: nowISO(), processOperator: operator }
-          : r
+        r.id === recordId ? { ...r, ...updates } : r
       );
 
       const newState: PersistState = {
@@ -287,7 +295,13 @@ export const useAppStore = create<AppState>((set, get) => ({
   getClinicRecordsByFilter: (filter) => {
     const { status, choice, keyword } = filter;
     return get().clinicRecords.filter((r) => {
-      if (status && status !== 'all' && r.processStatus !== status) return false;
+      if (status && status !== 'all') {
+        if (status === 'handled') {
+          if (r.processStatus === 'pending') return false;
+        } else if (r.processStatus !== status) {
+          return false;
+        }
+      }
       if (choice && choice !== 'all' && r.parentChoice !== choice) return false;
       if (keyword) {
         const kw = keyword.toLowerCase().trim();

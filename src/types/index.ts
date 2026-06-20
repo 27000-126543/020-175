@@ -87,6 +87,7 @@ export interface ClinicRecheckRecord {
   processRemark?: string;
   processTime?: string;
   processOperator?: string;
+  nextFollowUpDate?: string;
 }
 
 export type AppRole = 'parent' | 'clinic';
