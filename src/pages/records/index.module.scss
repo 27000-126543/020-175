@@ -1,0 +1,275 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  padding: 0 $page-padding;
+  padding-bottom: 60rpx;
+  background: linear-gradient(180deg, #ECFDF5 0%, $color-bg-page 100%);
+}
+
+.headerCard {
+  margin-top: 40rpx;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  color: $color-text-white;
+  box-shadow: 0 8rpx 32rpx rgba($color-primary, 0.25);
+  margin-bottom: $spacing-xl;
+}
+
+.headerTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  display: block;
+  margin-bottom: $spacing-sm;
+}
+
+.headerSubtitle {
+  font-size: $font-size-sm;
+  opacity: 0.9;
+  line-height: 1.6;
+  display: block;
+}
+
+.totalBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 20rpx;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-round;
+  margin-top: $spacing-md;
+  font-size: $font-size-sm;
+}
+
+.filterTabs {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
+  flex-wrap: wrap;
+}
+
+.filterTab {
+  padding: 14rpx 28rpx;
+  border-radius: $radius-button;
+  background-color: $color-bg-card;
+  box-shadow: $shadow-card;
+  display: inline-flex;
+  align-items: center;
+  gap: 8rpx;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.activeTab {
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  box-shadow: 0 4rpx 16rpx rgba($color-primary, 0.3);
+}
+
+.filterLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+
+  .activeTab & {
+    color: $color-text-white;
+  }
+}
+
+.filterCount {
+  min-width: 36rpx;
+  height: 36rpx;
+  padding: 0 10rpx;
+  border-radius: $radius-round;
+  background-color: $color-bg-hover;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  .activeTab & {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: $color-text-white;
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+  margin-top: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.sectionCount {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.emptyState {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-xl * 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: $shadow-card;
+}
+
+.emptyIcon {
+  font-size: 96rpx;
+  margin-bottom: $spacing-lg;
+  opacity: 0.5;
+}
+
+.emptyTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.emptyDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.toothGrid {
+  display: flex;
+  flex-direction: column;
+}
+
+.legend {
+  margin-top: $spacing-lg;
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.legendTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+  display: block;
+}
+
+.legendItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  flex: 1;
+  min-width: 200rpx;
+}
+
+.legendDot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: $radius-round;
+}
+
+.sealedDot {
+  background-color: $color-status-sealed;
+}
+
+.observingDot {
+  background-color: $color-status-observing;
+}
+
+.recheckDot {
+  background-color: $color-status-recheck;
+}
+
+.legendText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.tipCard {
+  margin-top: $spacing-lg;
+  background-color: #FFFBEB;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  border-left: 6rpx solid $color-warning;
+}
+
+.tipTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: #92400E;
+  margin-bottom: $spacing-sm;
+  display: block;
+}
+
+.tipContent {
+  font-size: $font-size-sm;
+  color: #A16207;
+  line-height: 1.7;
+}
+
+.bindHint {
+  margin-top: 40rpx;
+  background-color: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xl * 2 $spacing-xl;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.bindHintIcon {
+  font-size: 100rpx;
+  margin-bottom: $spacing-lg;
+}
+
+.bindHintTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.bindHintDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.7;
+  margin-bottom: $spacing-xl;
+}
+
+.bindHintBtn {
+  @include button-reset;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  padding: 0 48rpx;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}

@@ -1,0 +1,333 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  padding: 0 $page-padding;
+  padding-bottom: 60rpx;
+  background: linear-gradient(180deg, #ECFDF5 0%, $color-bg-page 100%);
+}
+
+.bindSection {
+  padding-top: 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bindHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 64rpx;
+}
+
+.bindIcon {
+  width: 160rpx;
+  height: 160rpx;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $spacing-lg;
+  box-shadow: 0 8rpx 32rpx rgba($color-primary, 0.2);
+}
+
+.bindIconText {
+  font-size: 88rpx;
+}
+
+.bindTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.bindSubtitle {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.bindCard {
+  width: 100%;
+  background-color: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.inputLabel {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.inputWrap {
+  display: flex;
+  align-items: center;
+  background-color: $color-primary-soft;
+  border-radius: $radius-md;
+  padding: 0 $spacing-lg;
+  height: 96rpx;
+}
+
+.codeIcon {
+  font-size: 40rpx;
+  margin-right: $spacing-md;
+}
+
+.codeInput {
+  flex: 1;
+  height: 100%;
+  font-size: 32rpx;
+  color: $color-primary-dark;
+  letter-spacing: 2rpx;
+  font-weight: $font-weight-medium;
+}
+
+.tipText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  line-height: 1.6;
+}
+
+.tipHighlight {
+  color: $color-primary-dark;
+  font-weight: $font-weight-medium;
+}
+
+.bindButton {
+  @include button-reset;
+  height: $button-height-lg;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  color: $color-text-white;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+  box-shadow: 0 8rpx 24rpx rgba($color-primary, 0.25);
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.disabledBtn {
+  background: $color-text-disabled;
+  box-shadow: none;
+}
+
+.profileSection {
+  padding-top: 40rpx;
+}
+
+.profileCard {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  color: $color-text-white;
+  box-shadow: 0 8rpx 32rpx rgba($color-primary, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.profileCard::after {
+  content: '';
+  position: absolute;
+  right: -60rpx;
+  top: -60rpx;
+  width: 240rpx;
+  height: 240rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: $radius-round;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-xl;
+  position: relative;
+  z-index: 1;
+}
+
+.avatar {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: $radius-round;
+  background-color: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  border: 4rpx solid rgba(255, 255, 255, 0.4);
+}
+
+.avatarImg {
+  width: 100%;
+  height: 100%;
+}
+
+.childInfo {
+  flex: 1;
+}
+
+.childName {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.childMeta {
+  font-size: $font-size-sm;
+  opacity: 0.9;
+}
+
+.codeTag {
+  display: inline-block;
+  padding: 6rpx 16rpx;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  margin-top: 16rpx;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-md;
+  position: relative;
+  z-index: 1;
+}
+
+.infoItem {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.infoIcon {
+  font-size: 36rpx;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.infoLabel {
+  font-size: $font-size-xs;
+  opacity: 0.8;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.infoValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}
+
+.section {
+  margin-top: $spacing-xl;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.infoCard {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.infoRow {
+  display: flex;
+  align-items: flex-start;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.rowLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  min-width: 160rpx;
+}
+
+.rowValue {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.statsRow {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-md;
+}
+
+.statCard {
+  flex: 1;
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  text-align: center;
+  box-shadow: $shadow-card;
+}
+
+.statNum {
+  font-size: 44rpx;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.orangeNum {
+  color: $color-warning;
+}
+
+.orangeRedNum {
+  color: $color-status-recheck;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.unbindBtn {
+  @include button-reset;
+  margin-top: $spacing-xl;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background-color: #FEF2F2;
+  color: $color-error;
+  font-size: $font-size-md;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}

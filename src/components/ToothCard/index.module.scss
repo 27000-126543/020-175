@@ -1,0 +1,399 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: 0 2rpx 12rpx rgba(16, 185, 129, 0.08);
+  margin-bottom: $spacing-md;
+  transition: all $transition-base;
+
+  &.expanded {
+    box-shadow: 0 4rpx 20rpx rgba(16, 185, 129, 0.15);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.toothIcon {
+  width: 88rpx;
+  height: 88rpx;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toothIconText {
+  font-size: 48rpx;
+}
+
+.toothInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.toothName {
+  font-size: 30rpx;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.toothNumber {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.arrow {
+  font-size: 40rpx;
+  color: $color-text-tertiary;
+  line-height: 1;
+  transition: transform $transition-base;
+  transform: rotate(90deg);
+
+  &.arrowUp {
+    transform: rotate(-90deg);
+  }
+}
+
+.summary {
+  display: flex;
+  gap: $spacing-lg;
+  margin-top: $spacing-lg;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.summaryItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.summaryLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.summaryValue {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+}
+
+.urgentText {
+  color: $color-status-recheck;
+}
+
+.detail {
+  margin-top: $spacing-lg;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.sectionTitle {
+  font-size: 28rpx;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.materialBox, .notesBox, .feedbackBox {
+  background-color: $color-primary-soft;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.materialName {
+  font-size: 28rpx;
+  font-weight: $font-weight-medium;
+  color: $color-primary-dark;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.materialDesc, .notesText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.6;
+}
+
+.precautionsList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  background-color: #FFFBEB;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+}
+
+.precautionItem {
+  display: flex;
+  gap: 12rpx;
+}
+
+.precautionBullet {
+  color: $color-warning;
+  font-weight: $font-weight-bold;
+  line-height: 1.6;
+}
+
+.precautionText {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.6;
+}
+
+.feedbackRow {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.feedbackLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  min-width: 140rpx;
+}
+
+.feedbackValue {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.feedbackDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  flex: 1;
+}
+
+.warningText {
+  color: $color-warning;
+}
+
+.feedbackPhoto {
+  margin-top: $spacing-sm;
+  margin-bottom: $spacing-sm;
+}
+
+.photoImg {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: $radius-sm;
+}
+
+.feedbackDate {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: $spacing-sm;
+  display: block;
+}
+
+.feedbackActions {
+  margin-top: $spacing-sm;
+}
+
+.editFeedbackBtn {
+  @include button-reset;
+  height: $button-height-sm;
+  border-radius: $radius-button;
+  background-color: $color-primary-soft;
+  color: $color-primary-dark;
+  font-size: $font-size-sm;
+  width: 220rpx;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.feedbackBtn {
+  @include button-reset;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.feedbackForm {
+  background-color: #F9FAFB;
+  border-radius: $radius-md;
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.formTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  text-align: center;
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.formRowCol {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.formLabel {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.textarea {
+  width: 100%;
+  height: 160rpx;
+  background-color: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  font-size: $font-size-sm;
+  border: 1rpx solid $color-border;
+  box-sizing: border-box;
+}
+
+.photoUploader {
+  width: 100%;
+}
+
+.previewWrap {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.previewImg {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: $radius-md;
+}
+
+.removePhoto {
+  position: absolute;
+  top: -16rpx;
+  right: -16rpx;
+  width: 40rpx;
+  height: 40rpx;
+  background-color: $color-error;
+  border-radius: $radius-round;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removePhotoText {
+  color: white;
+  font-size: 28rpx;
+  line-height: 1;
+}
+
+.uploadBtn {
+  width: 200rpx;
+  height: 200rpx;
+  border: 2rpx dashed $color-border;
+  border-radius: $radius-md;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  background-color: $color-bg-card;
+}
+
+.uploadIcon {
+  font-size: 60rpx;
+  opacity: 0.5;
+}
+
+.uploadText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.formActions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.cancelBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background-color: $color-bg-hover;
+  color: $color-text-secondary;
+  font-size: $font-size-md;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.submitBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}

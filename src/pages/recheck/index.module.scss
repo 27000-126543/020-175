@@ -1,0 +1,559 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  padding: 0 $page-padding;
+  padding-bottom: 60rpx;
+  background: linear-gradient(180deg, #FFF7ED 0%, #F0FDF4 30%, $color-bg-page 100%);
+}
+
+.headerCard {
+  margin-top: 40rpx;
+  background: linear-gradient(135deg, $color-care 0%, $color-care-light 100%);
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  color: $color-text-white;
+  box-shadow: 0 8rpx 32rpx rgba($color-care, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.headerCard::after {
+  content: '';
+  position: absolute;
+  right: -80rpx;
+  bottom: -80rpx;
+  width: 280rpx;
+  height: 280rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: $radius-round;
+}
+
+.headerTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  display: block;
+  margin-bottom: $spacing-sm;
+  position: relative;
+  z-index: 1;
+}
+
+.headerSubtitle {
+  font-size: $font-size-sm;
+  opacity: 0.95;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+.statsRow {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-xl;
+  margin-bottom: $spacing-md;
+}
+
+.statCard {
+  flex: 1;
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  text-align: center;
+  box-shadow: $shadow-card;
+  position: relative;
+  z-index: 1;
+}
+
+.urgentCardBg {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95));
+}
+
+.statNum {
+  font-size: 44rpx;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.orangeNum {
+  color: $color-care;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.section {
+  margin-top: $spacing-xl;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.sectionMore {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.urgentTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 6rpx 16rpx;
+  background-color: rgba($color-error, 0.1);
+  border-radius: $radius-round;
+  font-size: $font-size-xs;
+  color: $color-error;
+  font-weight: $font-weight-medium;
+}
+
+.reminderCard {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+  border-left: 8rpx solid $color-primary;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+.urgentBorderCard {
+  border-left-color: $color-error;
+}
+
+.handledCard {
+  border-left-color: $color-border;
+  opacity: 0.85;
+}
+
+.reminderHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.reminderLeft {
+  flex: 1;
+}
+
+.reminderWeek {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.reminderTeeth {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.5;
+  display: block;
+}
+
+.statusBadgeRow {
+  display: flex;
+  gap: $spacing-xs;
+}
+
+.urgentBadge {
+  padding: 6rpx 14rpx;
+  background-color: rgba($color-error, 0.1);
+  color: $color-error;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.handledBadge {
+  padding: 6rpx 14rpx;
+  background-color: rgba($color-success, 0.1);
+  color: $color-success;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.reminderInfo {
+  display: flex;
+  gap: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.infoIcon {
+  font-size: 24rpx;
+}
+
+.infoText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.actionRow {
+  margin-top: $spacing-lg;
+  display: flex;
+  gap: $spacing-sm;
+  flex-wrap: wrap;
+}
+
+.actionBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-md;
+  min-width: 200rpx;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.primaryBtn {
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  color: $color-text-white;
+  box-shadow: 0 4rpx 16rpx rgba($color-primary, 0.25);
+}
+
+.warningBtn {
+  background: linear-gradient(135deg, $color-care-light 0%, $color-care 100%);
+  color: $color-text-white;
+  box-shadow: 0 4rpx 16rpx rgba($color-care, 0.25);
+}
+
+.secondaryBtn {
+  background-color: $color-bg-hover;
+  color: $color-text-secondary;
+}
+
+.handledInfo {
+  padding: $spacing-md;
+  background-color: $color-primary-soft;
+  border-radius: $radius-md;
+  margin-top: $spacing-md;
+}
+
+.handledRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.handledIcon {
+  font-size: 32rpx;
+}
+
+.handledText {
+  font-size: $font-size-sm;
+  color: $color-primary-dark;
+  font-weight: $font-weight-medium;
+}
+
+.historySection {
+  margin-top: $spacing-xl;
+}
+
+.historyItem {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+}
+
+.historyHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.historyDate {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.historyDoctor {
+  font-size: $font-size-xs;
+  padding: 6rpx 14rpx;
+  background-color: $color-primary-soft;
+  color: $color-primary-dark;
+  border-radius: $radius-sm;
+}
+
+.historyTeeth {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  display: block;
+  margin-bottom: $spacing-sm;
+}
+
+.historyResult {
+  padding: $spacing-md;
+  background-color: #F0FDF4;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  line-height: 1.6;
+}
+
+.emptyState {
+  background-color: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-xl * 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: $shadow-card;
+  text-align: center;
+}
+
+.emptyIcon {
+  font-size: 96rpx;
+  margin-bottom: $spacing-lg;
+  opacity: 0.5;
+}
+
+.emptyTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.emptyDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  line-height: 1.6;
+}
+
+.bindHint {
+  margin-top: 40rpx;
+  background-color: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xl * 2 $spacing-xl;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.bindHintIcon {
+  font-size: 100rpx;
+  margin-bottom: $spacing-lg;
+}
+
+.bindHintTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-sm;
+}
+
+.bindHintDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.7;
+  margin-bottom: $spacing-xl;
+}
+
+.bindHintBtn {
+  @include button-reset;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  padding: 0 48rpx;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+}
+
+.modalCard {
+  width: 100%;
+  background-color: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  max-width: 650rpx;
+}
+
+.modalTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  text-align: center;
+  display: block;
+  margin-bottom: $spacing-lg;
+}
+
+.modalSubtitle {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  text-align: center;
+  display: block;
+  margin-bottom: $spacing-xl;
+}
+
+.choiceList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-bottom: $spacing-xl;
+}
+
+.choiceItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-lg;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-lg;
+  gap: $spacing-md;
+  transition: all $transition-base;
+
+  &:active {
+    border-color: $color-primary;
+    background-color: $color-primary-soft;
+  }
+}
+
+.choiceIcon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+  flex-shrink: 0;
+}
+
+.choiceText {
+  flex: 1;
+}
+
+.choiceName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.choiceDesc {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  line-height: 1.5;
+}
+
+.modalActions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.cancelBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background-color: $color-bg-hover;
+  color: $color-text-secondary;
+  font-size: $font-size-md;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.confirmBtn {
+  @include button-reset;
+  flex: 1;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-primary-light 0%, $color-primary 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.datePickerRow {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md;
+  background-color: $color-bg-hover;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-md;
+}
+
+.dateLabel {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-right: $spacing-md;
+}
+
+.dateValue {
+  flex: 1;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-primary-dark;
+}
+
+.arrowIcon {
+  color: $color-text-tertiary;
+  font-size: 32rpx;
+}

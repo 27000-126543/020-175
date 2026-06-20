@@ -1,0 +1,42 @@
+// ============================================
+// 窝沟封闭小程序 - 主题配色变量
+// ============================================
+
+// 品牌主题色：健康绿（温馨亲和、专业安心）
+$color-primary: #10B981;
+$color-primary-light: #34D399;
+$color-primary-dark: #059669;
+$color-primary-soft: rgba(16, 185, 129, 0.08);
+
+// 功能色
+$color-success: #10B981;
+$color-warning: #F59E0B;
+$color-error: #EF4444;
+$color-info: #3B82F6;
+
+// 业务状态色
+$color-status-sealed: #10B981;      // 已封闭
+$color-status-observing: #F59E0B;   // 待观察
+$color-status-recheck: #F97316;     // 建议复查
+
+// 关怀色
+$color-care: #F97316;
+$color-care-light: #FDBA74;
+
+// 背景色
+$color-bg-page: #F0FDF4;
+$color-bg-card: #ffffff;
+$color-bg-hover: #ECFDF5;
+$color-bg-tag: #D1FAE5;
+
+// 文本色
+$color-text-primary: #1F2937;
+$color-text-secondary: #6B7280;
+$color-text-tertiary: #9CA3AF;
+$color-text-disabled: #C9CDD4;
+$color-text-white: #ffffff;
+
+// 边框色
+$color-border: #E5E7EB;
+$color-divider: #F3F4F6;
+$color-border-light: #F0FDF4;
