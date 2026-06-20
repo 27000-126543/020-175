@@ -59,15 +59,19 @@ export interface RecheckHistory {
   doctor: string;
 }
 
+export type ProcessStatus = 'pending' | 'contacted' | 'scheduled' | 'completed';
+
 export interface ClinicRecheckRecord {
   id: string;
   submittedAt: string;
+  reminderId?: string;
   child: {
     id: string;
     name: string;
     gender: '男' | '女';
     age: number;
     registerCode: string;
+    contactPhone?: string;
   };
   clinicName: string;
   teeth: {
@@ -79,6 +83,10 @@ export interface ClinicRecheckRecord {
   parentChoice: RecheckChoice;
   appointmentDate?: string;
   isUrgent: boolean;
-  contactPhone?: string;
-  status: 'pending' | 'processed';
+  processStatus: ProcessStatus;
+  processRemark?: string;
+  processTime?: string;
+  processOperator?: string;
 }
+
+export type AppRole = 'parent' | 'clinic';

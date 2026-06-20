@@ -3,8 +3,8 @@ import { View, Text, Button, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
-import { useAppStore } from '@/store';
-import type { RecheckReminder, RecheckChoice } from '@/types';
+import { useAppStore, processStatusMap } from '@/store';
+import type { RecheckReminder, RecheckChoice, ClinicRecheckRecord } from '@/types';
 
 interface ChoiceOption {
   key: RecheckChoice;
@@ -20,8 +20,24 @@ const choiceOptions: ChoiceOption[] = [
   { key: 'later', icon: '⏰', name: '暂不方便', desc: '过段时间再安排复查', color: '#F59E0B' }
 ];
 
+const formatDateTime = (iso: string) => {
+  try {
+    const d = new Date(iso);
+    const date = d.toISOString().split('T')[0];
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    return { date, time: `${hh}:${mm}` };
+  } catch (e) {
+    return { date: '-', time: '-' };
+  }
+};
+
 const RecheckPage: React.FC = () => {
-  const { isBound, child, recheckReminders, recheckHistory, handleRecheckChoice } = useAppStore();
+  const { isBound, child, recheckReminders, recheckHistory, handleRecheckChoice, getRecordByReminderId, clinicRecords } = useAppStore();
+
+  const childClinicRecords = clinicRecords.filter(
+    (r) => r.child.id === child?.id || r.child.registerCode === child?.registerCode
+  );
 
   const [showModal, setShowModal] = useState(false);
   const [currentReminder, setCurrentReminder] = useState<RecheckReminder | null>(null);
@@ -337,43 +353,129 @@ const RecheckPage: React.FC = () => {
         )}
       </View>
 
-      {handledReminders.length > 0 && (
+      {childClinicRecords.length > 0 && (
         <View className={styles.section}>
           <View className={styles.sectionHeader}>
-            <Text className={styles.sectionTitle}>✅ 已处理</Text>
-            <Text className={styles.sectionMore}>{handledReminders.length} 项</Text>
+            <Text className={styles.sectionTitle}>📬 我的复查提交记录</Text>
+            <Text className={styles.sectionMore}>{childClinicRecords.length} 条</Text>
           </View>
-          {handledReminders.map((reminder) => (
-            <View
-              key={reminder.id}
-              className={classnames(styles.reminderCard, styles.handledCard)}
-            >
-              <View className={styles.reminderHeader}>
-                <View className={styles.reminderLeft}>
-                  <Text className={styles.reminderWeek}>{reminder.recheckWeek}</Text>
-                  <Text className={styles.reminderTeeth}>
-                    复查：{reminder.toothNames}
-                  </Text>
-                </View>
-                <View className={styles.statusBadgeRow}>
-                  <View className={styles.handledBadge}>已处理</View>
-                </View>
-              </View>
+          {childClinicRecords.map((record: ClinicRecheckRecord) => {
+            const submitted = formatDateTime(record.submittedAt);
+            const processed = record.processTime ? formatDateTime(record.processTime) : null;
+            const statusMeta = processStatusMap[record.processStatus];
+            const choiceMeta = choiceOptions.find((c) => c.key === record.parentChoice);
 
-              <View className={styles.handledInfo}>
-                <View className={styles.handledRow}>
-                  <Text className={styles.handledIcon}>
-                    {choiceOptions.find((c) => c.key === reminder.choice)?.icon || '✅'}
-                  </Text>
-                  <Text className={styles.handledText}>
-                    {reminder.choice ? choiceTextMap[reminder.choice] : '已处理'}
-                    {reminder.appointmentDate && ` · 预约 ${reminder.appointmentDate}`}
-                    {reminder.handleDate && ` · ${reminder.handleDate}处理`}
+            return (
+              <View
+                key={record.id}
+                className={classnames(
+                  styles.submitDetailCard,
+                  record.processStatus === 'completed' && styles.detailCompleted
+                )}
+              >
+                <View className={styles.detailCardHeader}>
+                  <View className={styles.detailCardTitleRow}>
+                    <Text className={styles.detailCardTitle}>提交详情</Text>
+                    <View
+                      className={styles.detailStatusTag}
+                      style={{ backgroundColor: `${statusMeta.color}15`, color: statusMeta.color }}
+                    >
+                      <Text>{statusMeta.label}</Text>
+                    </View>
+                  </View>
+                  <Text className={styles.detailCardTime}>
+                    🕒 提交于 {submitted.date} {submitted.time}
                   </Text>
                 </View>
+
+                <View className={styles.detailCardBody}>
+                  <View className={styles.detailRow}>
+                    <Text className={styles.detailRowLabel}>复查周期</Text>
+                    <Text className={styles.detailRowValue}>{record.recheckWeek}</Text>
+                  </View>
+                  <View className={styles.detailRow}>
+                    <Text className={styles.detailRowLabel}>涉及牙齿</Text>
+                    <View className={styles.detailTeethWrap}>
+                      {record.teeth.map((t, i) => (
+                        <View key={i} className={styles.detailToothTag}>
+                          {t.toothNumber} {t.toothName}
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                  <View className={styles.detailRow}>
+                    <Text className={styles.detailRowLabel}>家长选择</Text>
+                    <View className={styles.detailChoiceRow}>
+                      <Text className={styles.detailChoiceIcon}>{choiceMeta?.icon || '✅'}</Text>
+                      <Text className={styles.detailChoiceText} style={{ color: choiceMeta?.color }}>
+                        {choiceMeta?.name}
+                      </Text>
+                    </View>
+                  </View>
+                  {record.appointmentDate && (
+                    <View className={styles.detailRow}>
+                      <Text className={styles.detailRowLabel}>预约日期</Text>
+                      <Text className={styles.detailRowValue}>
+                        🗓️ {record.appointmentDate}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+
+                {record.processStatus !== 'pending' && (
+                  <View className={styles.detailProgressBox}>
+                    <View className={styles.detailProgressTitle}>
+                      <Text>🏥 诊所处理进度</Text>
+                    </View>
+                    <View className={styles.detailProgressRows}>
+                      <View className={styles.detailRow}>
+                        <Text className={styles.detailRowLabel}>处理状态</Text>
+                        <Text
+                          className={styles.detailRowValue}
+                          style={{ color: statusMeta.color, fontWeight: '600' }}
+                        >
+                          ● {statusMeta.label}
+                        </Text>
+                      </View>
+                      {processed && (
+                        <View className={styles.detailRow}>
+                          <Text className={styles.detailRowLabel}>处理时间</Text>
+                          <Text className={styles.detailRowValue}>
+                            {processed.date} {processed.time}
+                          </Text>
+                        </View>
+                      )}
+                      {record.processOperator && (
+                        <View className={styles.detailRow}>
+                          <Text className={styles.detailRowLabel}>处理人员</Text>
+                          <Text className={styles.detailRowValue}>
+                            👤 {record.processOperator}
+                          </Text>
+                        </View>
+                      )}
+                      {record.processRemark && (
+                        <View className={styles.detailRow}>
+                          <Text className={styles.detailRowLabel}>处理备注</Text>
+                          <Text className={styles.detailRowValue}>
+                            {record.processRemark}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+                  </View>
+                )}
+
+                {record.processStatus === 'pending' && (
+                  <View className={styles.detailPendingHint}>
+                    <Text className={styles.pendingHintIcon}>⏳</Text>
+                    <Text className={styles.pendingHintText}>
+                      已通知诊所，请耐心等待前台联系您确认。紧急情况可直接拨打电话。
+                    </Text>
+                  </View>
+                )}
               </View>
-            </View>
-          ))}
+            );
+          })}
         </View>
       )}
 

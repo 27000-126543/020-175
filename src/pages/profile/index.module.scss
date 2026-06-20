@@ -331,3 +331,62 @@
     transform: scale(0.98);
   }
 }
+
+.clinicEntry {
+  margin-top: $spacing-xl;
+}
+
+.clinicEntryCard {
+  background: linear-gradient(135deg, #EFF6FF 0%, #E0E7FF 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  box-shadow: 0 4rpx 16rpx rgba(59, 130, 246, 0.1);
+  border: 2rpx solid #C7D2FE;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.95;
+  }
+}
+
+.clinicEntryIcon {
+  width: 88rpx;
+  height: 88rpx;
+  background: linear-gradient(135deg, #3B82F6 0%, #6366F1 100%);
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+  flex-shrink: 0;
+}
+
+.clinicEntryInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  min-width: 0;
+}
+
+.clinicEntryTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: #1E40AF;
+}
+
+.clinicEntryDesc {
+  font-size: $font-size-xs;
+  color: #6366F1;
+  opacity: 0.9;
+}
+
+.clinicEntryArrow {
+  font-size: 40rpx;
+  color: #6366F1;
+  line-height: 1;
+}

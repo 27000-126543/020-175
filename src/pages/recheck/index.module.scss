@@ -590,3 +590,154 @@
   background: $color-text-disabled;
   box-shadow: none;
 }
+
+.submitDetailCard {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF9 100%);
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+  border: 2rpx solid #D1FAE5;
+  transition: all $transition-base;
+}
+
+.detailCompleted {
+  opacity: 0.9;
+  border-color: #E5E7EB;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F9FAFB 100%);
+}
+
+.detailCardHeader {
+  padding-bottom: $spacing-md;
+  margin-bottom: $spacing-md;
+  border-bottom: 2rpx dashed $color-divider;
+}
+
+.detailCardTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.detailCardTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.detailStatusTag {
+  padding: 8rpx 20rpx;
+  border-radius: $radius-round;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.detailCardTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.detailCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.detailRow {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-md;
+}
+
+.detailRowLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  min-width: 140rpx;
+  flex-shrink: 0;
+  padding-top: 4rpx;
+}
+
+.detailRowValue {
+  flex: 1;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+  line-height: 1.5;
+}
+
+.detailTeethWrap {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+}
+
+.detailToothTag {
+  padding: 6rpx 16rpx;
+  background-color: #ECFDF5;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  color: $color-primary-dark;
+  border: 1rpx solid #A7F3D0;
+}
+
+.detailChoiceRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.detailChoiceIcon {
+  font-size: 32rpx;
+}
+
+.detailChoiceText {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+}
+
+.detailProgressBox {
+  background-color: #EFF6FF;
+  border-radius: $radius-lg;
+  padding: $spacing-md $spacing-lg;
+  border-left: 6rpx solid #3B82F6;
+}
+
+.detailProgressTitle {
+  margin-bottom: $spacing-sm;
+  Text {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    color: #1E40AF;
+  }
+}
+
+.detailProgressRows {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.detailPendingHint {
+  background-color: #FFFBEB;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  border-left: 6rpx solid $color-warning;
+}
+
+.pendingHintIcon {
+  font-size: 36rpx;
+  flex-shrink: 0;
+}
+
+.pendingHintText {
+  flex: 1;
+  font-size: $font-size-xs;
+  color: #92400E;
+  line-height: 1.6;
+}

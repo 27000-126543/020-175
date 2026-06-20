@@ -181,6 +181,17 @@ const ProfilePage: React.FC = () => {
           </Button>
         </View>
       )}
+
+      <View className={styles.clinicEntry}>
+        <View className={styles.clinicEntryCard} onClick={() => Taro.navigateTo({ url: '/pages/clinic/index' })}>
+          <View className={styles.clinicEntryIcon}>🏥</View>
+          <View className={styles.clinicEntryInfo}>
+            <Text className={styles.clinicEntryTitle}>诊所前台入口</Text>
+            <Text className={styles.clinicEntryDesc}>前台人员登录查看家长提交的复查记录</Text>
+          </View>
+          <Text className={styles.clinicEntryArrow}>›</Text>
+        </View>
+      </View>
     </View>
   );
 };

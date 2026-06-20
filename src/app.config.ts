@@ -2,7 +2,8 @@ export default defineAppConfig({
   pages: [
     'pages/profile/index',
     'pages/records/index',
-    'pages/recheck/index'
+    'pages/recheck/index',
+    'pages/clinic/index'
   ],
   window: {
     backgroundTextStyle: 'light',
