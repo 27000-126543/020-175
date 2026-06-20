@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Button, ScrollView, Input, Textarea, Switch } from '@tarojs/components';
+import { View, Text, Image, Button, Textarea, Switch } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import classnames from 'classnames';
 import styles from './index.module.scss';
@@ -24,22 +24,35 @@ const ToothCard: React.FC<ToothCardProps> = ({ record }) => {
   const [discomfortDesc, setDiscomfortDesc] = useState(record.parentFeedback?.discomfortDesc ?? '');
   const [photoUrl, setPhotoUrl] = useState(record.parentFeedback?.photoUrl ?? '');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSavingPhoto, setIsSavingPhoto] = useState(false);
   const updateTeethFeedback = useAppStore((s) => s.updateTeethFeedback);
+  const saveFeedbackPhoto = useAppStore((s) => s.saveFeedbackPhoto);
 
   const handleChooseImage = async () => {
     try {
+      setIsSavingPhoto(true);
       const res = await Taro.chooseImage({
         count: 1,
         sizeType: ['compressed'],
         sourceType: ['album', 'camera']
       });
-      setPhotoUrl(res.tempFilePaths[0]);
+      const tempPath = res.tempFilePaths[0];
+      const savedPath = await saveFeedbackPhoto(tempPath, record.id);
+      setPhotoUrl(savedPath);
     } catch (e) {
-      console.error('[ToothCard] 选择图片失败', e);
+      console.error('[ToothCard] 选择或保存图片失败', e);
+      Taro.showToast({ title: '图片保存失败，请重试', icon: 'none' });
+    } finally {
+      setIsSavingPhoto(false);
     }
   };
 
+  const handleRemovePhoto = () => {
+    setPhotoUrl('');
+  };
+
   const handleSubmitFeedback = async () => {
+    const oldPhotoUrl = record.parentFeedback?.photoUrl;
     setIsSubmitting(true);
     try {
       const feedback: ParentFeedback = {
@@ -49,7 +62,7 @@ const ToothCard: React.FC<ToothCardProps> = ({ record }) => {
         photoUrl: photoUrl || undefined,
         submitDate: new Date().toISOString().split('T')[0]
       };
-      updateTeethFeedback(record.id, feedback);
+      updateTeethFeedback(record.id, feedback, oldPhotoUrl);
       setShowFeedback(false);
       Taro.showToast({ title: '反馈已提交', icon: 'success' });
     } catch (e) {
@@ -58,6 +71,22 @@ const ToothCard: React.FC<ToothCardProps> = ({ record }) => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const startEditFeedback = () => {
+    setHasDiscomfort(record.parentFeedback?.hasDiscomfort ?? false);
+    setIsSuspectedFalling(record.parentFeedback?.isSuspectedFalling ?? false);
+    setDiscomfortDesc(record.parentFeedback?.discomfortDesc ?? '');
+    setPhotoUrl(record.parentFeedback?.photoUrl ?? '');
+    setShowFeedback(true);
+  };
+
+  const cancelEdit = () => {
+    setHasDiscomfort(record.parentFeedback?.hasDiscomfort ?? false);
+    setIsSuspectedFalling(record.parentFeedback?.isSuspectedFalling ?? false);
+    setDiscomfortDesc(record.parentFeedback?.discomfortDesc ?? '');
+    setPhotoUrl(record.parentFeedback?.photoUrl ?? '');
+    setShowFeedback(false);
   };
 
   return (
@@ -152,7 +181,7 @@ const ToothCard: React.FC<ToothCardProps> = ({ record }) => {
                 <Text className={styles.feedbackDate}>提交于 {record.parentFeedback.submitDate}</Text>
               </View>
               <View className={styles.feedbackActions}>
-                <Button className={styles.editFeedbackBtn} onClick={() => setShowFeedback(true)}>
+                <Button className={styles.editFeedbackBtn} onClick={startEditFeedback}>
                   更新反馈
                 </Button>
               </View>
@@ -161,7 +190,7 @@ const ToothCard: React.FC<ToothCardProps> = ({ record }) => {
 
           {!record.parentFeedback && !showFeedback && (
             <View className={styles.section}>
-              <Button className={styles.feedbackBtn} onClick={() => setShowFeedback(true)}>
+              <Button className={styles.feedbackBtn} onClick={startEditFeedback}>
                 ✏️ 提交情况反馈
               </Button>
             </View>
@@ -208,24 +237,33 @@ const ToothCard: React.FC<ToothCardProps> = ({ record }) => {
                   {photoUrl ? (
                     <View className={styles.previewWrap}>
                       <Image src={photoUrl} className={styles.previewImg} mode="aspectFill" />
-                      <View className={styles.removePhoto} onClick={() => setPhotoUrl('')}>
+                      <View className={styles.removePhoto} onClick={handleRemovePhoto}>
                         <Text className={styles.removePhotoText}>×</Text>
                       </View>
                     </View>
                   ) : (
                     <View className={styles.uploadBtn} onClick={handleChooseImage}>
-                      <Text className={styles.uploadIcon}>📷</Text>
-                      <Text className={styles.uploadText}>点击上传</Text>
+                      {isSavingPhoto ? (
+                        <Text className={styles.uploadText}>保存中...</Text>
+                      ) : (
+                        <>
+                          <Text className={styles.uploadIcon}>📷</Text>
+                          <Text className={styles.uploadText}>点击上传</Text>
+                        </>
+                      )}
                     </View>
                   )}
                 </View>
+                {photoUrl && (
+                  <Text className={styles.photoTip}>💡 如需更换照片，请先删除当前照片再重新上传</Text>
+                )}
               </View>
 
               <View className={styles.formActions}>
-                <Button className={styles.cancelBtn} onClick={() => setShowFeedback(false)}>
+                <Button className={styles.cancelBtn} onClick={cancelEdit}>
                   取消
                 </Button>
-                <Button className={styles.submitBtn} loading={isSubmitting} onClick={handleSubmitFeedback}>
+                <Button className={styles.submitBtn} loading={isSubmitting || isSavingPhoto} disabled={isSavingPhoto} onClick={handleSubmitFeedback}>
                   提交反馈
                 </Button>
               </View>

@@ -58,3 +58,27 @@ export interface RecheckHistory {
   result: string;
   doctor: string;
 }
+
+export interface ClinicRecheckRecord {
+  id: string;
+  submittedAt: string;
+  child: {
+    id: string;
+    name: string;
+    gender: '男' | '女';
+    age: number;
+    registerCode: string;
+  };
+  clinicName: string;
+  teeth: {
+    toothId: string;
+    toothNumber: string;
+    toothName: string;
+  }[];
+  recheckWeek: string;
+  parentChoice: RecheckChoice;
+  appointmentDate?: string;
+  isUrgent: boolean;
+  contactPhone?: string;
+  status: 'pending' | 'processed';
+}

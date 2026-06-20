@@ -338,6 +338,16 @@
   line-height: 1;
 }
 
+.photoTip {
+  margin-top: $spacing-sm;
+  font-size: $font-size-xs;
+  color: $color-primary;
+  background-color: $color-primary-soft;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-sm;
+  display: block;
+}
+
 .uploadBtn {
   width: 200rpx;
   height: 200rpx;

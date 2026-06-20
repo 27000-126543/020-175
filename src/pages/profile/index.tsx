@@ -78,8 +78,10 @@ const ProfilePage: React.FC = () => {
             </View>
 
             <Text className={styles.tipText}>
-              💡 登记码由诊所通过微信/短信发送给您，格式为：
+              💡 <Text className={styles.tipHighlight}>每个孩子的登记码是唯一的</Text>，由诊所通过微信/短信发送，格式为：
               <Text className={styles.tipHighlight}>CLINIC-年份-5位数字</Text>
+              {'\n'}示例：CLINIC-2026-88521、CLINIC-2026-99001
+              {'\n'}请使用诊所发给您的真实登记码，自编号码将无法绑定。
               {'\n'}如未收到请联系诊所前台索取。
             </Text>
 

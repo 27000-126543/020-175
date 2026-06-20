@@ -79,44 +79,69 @@ const RecheckPage: React.FC = () => {
     return d.toISOString().split('T')[0];
   };
 
-  const handlePickDate = () => {
-    const d1 = addDays(1);
-    const d2 = addDays(2);
-    const dSat = getSaturday();
-    const dMon = getNextMonday();
-    const dNextSat = getNextSaturday();
+  const openDatePicker = (): Promise<string | null> => {
+    return new Promise((resolve) => {
+      const d1 = addDays(1);
+      const d2 = addDays(2);
+      const dSat = getSaturday();
+      const dMon = getNextMonday();
+      const dNextSat = getNextSaturday();
 
-    Taro.showActionSheet({
-      itemList: [
-        `明天 (${d1})`,
-        `后天 (${d2})`,
-        `本周六 (${dSat})`,
-        `下周一 (${dMon})`,
-        `下周六 (${dNextSat})`
-      ]
-    }).then((res) => {
-      const dates = [d1, d2, dSat, dMon, dNextSat];
-      const chosen = dates[res.tapIndex];
-      setSelectedDate(chosen);
-      console.log('[Recheck] 已选预约日期:', chosen);
-    }).catch(() => {});
+      Taro.showActionSheet({
+        itemList: [
+          `明天 (${d1})`,
+          `后天 (${d2})`,
+          `本周六 (${dSat})`,
+          `下周一 (${dMon})`,
+          `下周六 (${dNextSat})`
+        ]
+      }).then((res) => {
+        const dates = [d1, d2, dSat, dMon, dNextSat];
+        const chosen = dates[res.tapIndex];
+        console.log('[Recheck] 已选预约日期:', chosen);
+        resolve(chosen);
+      }).catch(() => {
+        console.log('[Recheck] 取消选择日期');
+        resolve(null);
+      });
+    });
   };
 
-  const handleChangeChoice = (choice: RecheckChoice) => {
+  const handleChangeChoice = async (choice: RecheckChoice) => {
     setSelectedChoice(choice);
+
     if (choice !== 'appointment') {
       setSelectedDate('');
-    } else if (!selectedDate) {
+      return;
+    }
+
+    if (choice === 'appointment') {
       Taro.showToast({
         title: '请选择预约日期',
         icon: 'none',
-        duration: 1500
+        duration: 1200
       });
+      const picked = await openDatePicker();
+      if (picked) {
+        setSelectedDate(picked);
+      }
+    }
+  };
+
+  const handleReopenDatePicker = async () => {
+    if (selectedChoice === 'appointment') {
+      const picked = await openDatePicker();
+      if (picked) {
+        setSelectedDate(picked);
+      }
     }
   };
 
   const handleConfirmChoice = async () => {
-    if (!selectedChoice || !currentReminder) return;
+    if (!selectedChoice || !currentReminder) {
+      Taro.showToast({ title: '请先选择复查方式', icon: 'none' });
+      return;
+    }
 
     if (selectedChoice === 'appointment' && !selectedDate) {
       Taro.showToast({
@@ -124,16 +149,27 @@ const RecheckPage: React.FC = () => {
         icon: 'none',
         duration: 2000
       });
+      const picked = await openDatePicker();
+      if (picked) {
+        setSelectedDate(picked);
+      }
+      return;
+    }
+
+    if (selectedChoice === 'appointment' && !selectedDate) {
+      console.log('[Recheck] 未选择日期，拦截提交，状态保持为待处理');
       return;
     }
 
     setIsSubmitting(true);
     try {
+      console.log('[Recheck] 开始提交复查选择，当前提醒状态:', currentReminder.status);
       handleRecheckChoice(
         currentReminder.id,
         selectedChoice,
         selectedChoice === 'appointment' ? selectedDate : undefined
       );
+      console.log('[Recheck] 复查选择已提交，状态已更新为 handled');
 
       const choiceConfig = choiceOptions.find((c) => c.key === selectedChoice);
 
@@ -380,7 +416,7 @@ const RecheckPage: React.FC = () => {
             </Text>
 
             {selectedChoice === 'appointment' && (
-              <View className={styles.datePickerRow} onClick={handlePickDate}>
+              <View className={styles.datePickerRow} onClick={handleReopenDatePicker}>
                 <Text className={styles.dateLabel}>预约日期</Text>
                 <Text className={classnames(styles.dateValue, !selectedDate && styles.datePlaceholder)}>
                   {selectedDate || '👆 请点击选择日期'}
